@@ -5,6 +5,8 @@ import net.jumperz.util.*;
 import net.jumperz.app.MMonjaDBCore.*;
 import net.jumperz.app.MMonjaDBCore.action.mj.MDisconnectAction;
 import net.jumperz.app.MMonjaDBCore.event.*;
+import javax.net.ssl.SSLSocketFactory;
+
 /*
 connect foo
 connect 192.169.0.5/foo
@@ -118,7 +120,11 @@ public void executeFunction()
 throws Exception
 {
 checkExistingConnection();
-mongo = new Mongo( host, port );
+ServerAddress addr = new ServerAddress(host.trim(), port);
+MongoOptions options = new MongoOptions();
+options.socketFactory = SSLSocketFactory.getDefault();
+mongo = new Mongo( addr, options );
+
 db = mongo.getDB( dbName );
 }
 //--------------------------------------------------------------------------------
